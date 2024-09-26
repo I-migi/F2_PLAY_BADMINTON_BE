@@ -1,7 +1,6 @@
 package org.badminton.api.config.security;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.badminton.api.member.jwt.JwtFilter;
 import org.badminton.api.member.jwt.JwtUtil;
@@ -17,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -71,6 +71,26 @@ public class SecurityConfig {
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		return http.build();
+	}
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.addAllowedOriginPattern("");
+		corsConfiguration.addExposedHeader("Authorization");
+		corsConfiguration.addExposedHeader("Set-Cookie");
+		corsConfiguration.addAllowedHeader("");
+		corsConfiguration.addAllowedMethod("*");
+		// corsConfiguration.addAllowedOrigin(System.getenv("WEBSITE_DOMAIN"));
+		// corsConfiguration.addAllowedOrigin(System.getenv("API_DOMAIN"));
+		corsConfiguration.addAllowedOrigin("http://localhost:8080"); // JUST FOR LOCAL DEV
+		corsConfiguration.addAllowedOrigin("http://localhost:3000"); // JUST FOR LOCAL DEV
+		corsConfiguration.addAllowedHeader("http://3.38.247.217:8080"); // JUST FOR PROD
+		corsConfiguration.setAllowCredentials(true);
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfiguration);
+		return source;
 	}
 
 }
