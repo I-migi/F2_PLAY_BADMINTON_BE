@@ -64,12 +64,13 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		response.sendRedirect("http://localhost:3000?token=" + token);
 	}
 
+	// JWT 쿠키 생성 메서드
 	private Cookie createCookie(String value) {
 		Cookie cookie = new Cookie("JWT", value);
 		cookie.setMaxAge(60 * 60 * 60);  // 쿠키 유효시간 설정
-		cookie.setSecure(false);
+		// cookie.setSecure(false);
 		cookie.setPath("/");  // 모든 경로에 대해 쿠키를 유효하게 설정
-		cookie.setHttpOnly(true);  // 자바스크립트로 접근 불가능하게 설정
+		// cookie.setHttpOnly(true);  // 자바스크립트로 접근 불가능하게 설정
 		cookie.setDomain("localhost");  // 리액트가 실행되는 도메인과 일치하도록 설정
 		return cookie;
 	}
